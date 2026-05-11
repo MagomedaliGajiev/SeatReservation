@@ -1,8 +1,9 @@
-﻿using Framework.Cors;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+
+namespace Framework.Cors;
 
 public static class CorsExtensions
 {
