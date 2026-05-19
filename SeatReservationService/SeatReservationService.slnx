@@ -1,8 +1,14 @@
 <Solution>
-  <Folder Name="/SolutionFolder/">
+  <Folder Name="/shared/">
+    <Project Path="Core/Core.csproj" />
+    <Project Path="Framework/Framework.csproj" />
+    <Project Path="SharedKernel/SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/Solution items/">
     <File Path=".editorconfig" />
     <File Path=".gitignore" />
     <File Path="Directory.Build.props" />
   </Folder>
+  <Project Path="SeatReservation.Domain/SeatReservation.Domain.csproj" />
   <Project Path="SeatReservationService.Web/SeatReservationService.Web.csproj" />
 </Solution>
