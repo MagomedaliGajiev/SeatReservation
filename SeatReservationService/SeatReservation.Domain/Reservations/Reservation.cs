@@ -1,10 +1,20 @@
-﻿namespace SeatReservation.Domain.Reservations;
+﻿using SeatReservation.Domain.Events;
+using SeatReservation.Domain.Venues;
+
+namespace SeatReservation.Domain.Reservations;
+
+public record ReservationId(Guid Value);
 
 public class Reservation
 {
     private List<ReservationSeat> _reservedSeats;
 
-    public Reservation(Guid id, Guid eventId, Guid userId, IEnumerable<Guid> seatIds)
+    // EF Core
+    private Reservation()
+    {
+    }
+
+    public Reservation(ReservationId id, EventId eventId, Guid userId, IEnumerable<Guid> seatIds)
     {
         Id = id;
         EventId = eventId;
@@ -13,15 +23,15 @@ public class Reservation
         CreatedAt = DateTime.UtcNow;
 
         var reservedSeats = seatIds
-            .Select(seatId => new ReservationSeat(Guid.NewGuid(), this, seatId))
+            .Select(seatId => new ReservationSeat(new ReservationSeatId(Guid.NewGuid()), this, new SeatId(seatId)))
             .ToList();
 
         _reservedSeats = reservedSeats;
     }
 
-    public Guid Id { get; }
+    public ReservationId Id { get; }
 
-    public Guid EventId { get; private set; }
+    public EventId EventId { get; private set; }
 
     public Guid UserId { get; private set; }
 

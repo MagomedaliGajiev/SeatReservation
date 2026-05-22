@@ -3,11 +3,18 @@ using SharedKernel;
 
 namespace SeatReservation.Domain.Venues;
 
+public record VenueId(Guid Value);
+
 public class Venue
 {
     private List<Seat> _seats = [];
 
-    public Venue(Guid id, string name, int seatsLimit, IEnumerable<Seat> seats)
+    // EF Core
+    private Venue()
+    {
+    }
+
+    public Venue(VenueId id, VenueName name, int seatsLimit, IEnumerable<Seat> seats)
     {
         Id = id;
         Name = name;
@@ -15,9 +22,9 @@ public class Venue
         _seats = _seats.ToList();
     }
 
-    public Guid Id { get; }
+    public VenueId Id { get; } = null!;
 
-    public string Name { get; private set; }
+    public VenueName Name { get; private set; }
 
     public int SeatsLimit { get; private set; }
 
@@ -29,7 +36,7 @@ public class Venue
     {
         if (SeatsCount >= SeatsLimit)
         {
-            return Error.Conflict("venue.seats.limit", "");
+            return Error.Conflict("venue.seats.limit", string.Empty);
         }
 
         _seats.Add(seat);
