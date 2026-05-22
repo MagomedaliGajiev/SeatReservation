@@ -8,7 +8,9 @@
     <File Path=".editorconfig" />
     <File Path=".gitignore" />
     <File Path="Directory.Build.props" />
+    <File Path="docker-compose.yml" />
   </Folder>
   <Project Path="SeatReservation.Domain/SeatReservation.Domain.csproj" />
+  <Project Path="SeatReservation.Infrastructure.Postgres/SeatReservation.Infrastructure.Postgres.csproj" />
   <Project Path="SeatReservationService.Web/SeatReservationService.Web.csproj" />
 </Solution>

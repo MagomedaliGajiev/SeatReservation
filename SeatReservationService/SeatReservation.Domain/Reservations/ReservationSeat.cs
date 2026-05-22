@@ -1,20 +1,31 @@
-﻿namespace SeatReservation.Domain.Reservations;
+﻿using SeatReservation.Domain.Venues;
+
+namespace SeatReservation.Domain.Reservations;
+
+public record ReservationSeatId(Guid Value);
 
 public class ReservationSeat
 {
-    public ReservationSeat(Guid id, Reservation reservationId, Guid seatId)
+    // EF Core
+    private ReservationSeat()
+    {
+    }
+
+    public ReservationSeat(ReservationSeatId id, Reservation reservation, SeatId seatId)
     {
         Id = id;
-        ReservationId = reservationId;
+        Reservation = reservation;
         SeatId = seatId;
         ReservedAt = DateTime.UtcNow;
     }
 
-    public Guid Id { get; }
+    public ReservationSeatId Id { get; }
 
-    public Reservation ReservationId { get; private set; }
+    public ReservationId ReservationId { get; private set; }
 
-    public Guid SeatId { get; private set; }
+    public Reservation Reservation { get; private set; }
+
+    public SeatId SeatId { get; private set; }
 
     public DateTime ReservedAt { get; }
 }
