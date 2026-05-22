@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using SharedKernel;
 
-namespace SeatReservation.Domain;
+namespace SeatReservation.Domain.Venues;
 
 public record VenueName
 {
