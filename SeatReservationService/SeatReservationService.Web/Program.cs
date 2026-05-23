@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using SeatReservation.Application;
 using SeatReservation.Application.Database;
 using SeatReservation.Infrastructure.Postgres;
+using SeatReservation.Infrastructure.Postgres.Database;
+using SeatReservation.Infrastructure.Postgres.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ReservationServiceDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ReservationServiceDb")));
 
-builder.Services.AddScoped<IReservationDbContext>(sp =>
-    sp.GetRequiredService<ReservationServiceDbContext>());
+builder.Services.AddSingleton<IDbConnectionFactory, NpgsqlConnectionFactory>();
+
+builder.Services.AddScoped<IVenuesRepository, NpgSqlVenuesRepository>();
+// builder.Services.AddScoped<IVenuesRepository, EfCoreVenuesRepository>();
 
 builder.Services.AddScoped<CreateVenueHandler>();
 

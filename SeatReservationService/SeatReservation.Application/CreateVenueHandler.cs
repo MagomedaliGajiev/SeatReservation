@@ -8,11 +8,11 @@ namespace SeatReservation.Application;
 
 public class CreateVenueHandler
 {
-    private readonly IReservationDbContext _dbContext;
+    private readonly IVenuesRepository _venuesRepository;
 
-    public CreateVenueHandler(IReservationDbContext dbContext)
+    public CreateVenueHandler(IVenuesRepository venuesRepository)
     {
-        _dbContext = dbContext;
+        _venuesRepository = venuesRepository;
     }
 
     /// <summary>
@@ -25,10 +25,16 @@ public class CreateVenueHandler
         // бизнес валидация
 
         // создание доменных моделей
+        var venue = Venue.Create(request.Prefix, request.Name, request.SeatsLimit);
+        if (venue.IsFailure)
+        {
+            return venue.Error;
+        }
+
         List<Seat> seats = [];
         foreach (var seatRequest in request.Seats)
         {
-            var seat = Seat.Create(seatRequest.RowNumber, seatRequest.SeatNumber);
+            var seat = Seat.Create(venue.Value, seatRequest.RowNumber, seatRequest.SeatNumber);
 
             if (seat.IsFailure)
             {
@@ -38,18 +44,10 @@ public class CreateVenueHandler
             seats.Add(seat.Value);
         }
 
-        var venue = Venue.Create(request.Prefix, request.Name, request.SeatsLimit, seats);
+        venue.Value.AddSeats(seats);
 
         // сохранение доменных моделей в базу данных
-        var entries1 = _dbContext.ChangeTracker.Entries();
-
-        await _dbContext.Venues.AddAsync(venue.Value, cancellationToken);
-
-        var entries2 = _dbContext.ChangeTracker.Entries();
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        var entries3 = _dbContext.ChangeTracker.Entries();
+        await _venuesRepository.Add(venue.Value, cancellationToken);
 
         return venue.Value.Id.Value;
     }

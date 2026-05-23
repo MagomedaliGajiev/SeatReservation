@@ -30,10 +30,13 @@ public class VenueConfiguration : IEntityTypeConfiguration<Venue>
                 .HasColumnName("name");
         });
 
+        builder.Property(v => v.SeatsLimit)
+            .HasColumnName("seats_limit");
+
         builder
             .HasMany(v => v.Seats)
-            .WithOne()
-            .HasForeignKey(v => v.VenueId)
+            .WithOne(s => s.Venue)
+            .HasForeignKey("venue_id")
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
     }

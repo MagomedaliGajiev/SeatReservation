@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SeatReservation.Application.Database;
 using SeatReservation.Domain;
 using SeatReservation.Domain.Venues;
 
 namespace SeatReservation.Infrastructure.Postgres;
 
-public class ReservationServiceDbContext : DbContext, IReservationDbContext
+public class ReservationServiceDbContext : DbContext
 {
     public ReservationServiceDbContext(DbContextOptions<ReservationServiceDbContext> options)
         : base(options)

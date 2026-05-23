@@ -14,12 +14,11 @@ public class Venue
     {
     }
 
-    public Venue(VenueId id, VenueName name, int seatsLimit, IEnumerable<Seat> seats)
+    public Venue(VenueId id, VenueName name, int seatsLimit)
     {
         Id = id;
         Name = name;
         SeatsLimit = seatsLimit;
-        _seats = seats.ToList();
     }
 
     public VenueId Id { get; } = null!;
@@ -31,6 +30,8 @@ public class Venue
     public int SeatsCount => _seats.Count;
 
     public IReadOnlyList<Seat> Seats => _seats;
+
+    public void AddSeats(IEnumerable<Seat> seats) => _seats.AddRange(seats);
 
     public UnitResult<Error> AddSeat(Seat seat)
     {
@@ -76,8 +77,7 @@ public class Venue
     public static Result<Venue, Error> Create(
         string prefix,
         string name,
-        int seatsLimit,
-        IEnumerable<Seat> seats)
+        int seatsLimit)
     {
         if (seatsLimit <= 0)
         {
@@ -90,18 +90,18 @@ public class Venue
             return venueNameResult.Error;
         }
 
-        var venueSeats = seats.ToList();
+        // var venueSeats = seats.ToList();
+        //
+        // if (venueSeats.Count < 1)
+        // {
+        //     return Error.Validation("venue.seats", "Number of seats can not be zero");
+        // }
+        //
+        // if (venueSeats.Count > seatsLimit)
+        // {
+        //     return Error.Validation("venue.seats", "Number of seats exceeds the venue's seat limit");
+        // }
 
-        if (venueSeats.Count < 1)
-        {
-            return Error.Validation("venue.seats", "Number of seats can not be zero");
-        }
-
-        if (venueSeats.Count > seatsLimit)
-        {
-            return Error.Validation("venue.seats", "Number of seats exceeds the venue's seat limit");
-        }
-
-        return new Venue(new VenueId(Guid.NewGuid()), venueNameResult.Value, seatsLimit, venueSeats);
+        return new Venue(new VenueId(Guid.NewGuid()), venueNameResult.Value, seatsLimit);
     }
 }
