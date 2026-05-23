@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Framework\Framework.csproj" />
       <ProjectReference Include="..\SeatReservation.Infrastructure.Postgres\SeatReservation.Infrastructure.Postgres.csproj" />
     </ItemGroup>
 
