@@ -4,7 +4,7 @@ using SeatReservation.Contracts;
 using SeatReservation.Domain.Venues;
 using SharedKernel;
 
-namespace SeatReservation.Application;
+namespace SeatReservation.Application.Venues;
 
 public class CreateVenueHandler
 {

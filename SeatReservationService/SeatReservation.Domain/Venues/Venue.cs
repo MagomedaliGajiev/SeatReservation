@@ -77,7 +77,8 @@ public class Venue
     public static Result<Venue, Error> Create(
         string prefix,
         string name,
-        int seatsLimit)
+        int seatsLimit,
+        VenueId? venueId = null)
     {
         if (seatsLimit <= 0)
         {
@@ -102,6 +103,6 @@ public class Venue
         //     return Error.Validation("venue.seats", "Number of seats exceeds the venue's seat limit");
         // }
 
-        return new Venue(new VenueId(Guid.NewGuid()), venueNameResult.Value, seatsLimit);
+        return new Venue(venueId ?? new VenueId(Guid.NewGuid()), venueNameResult.Value, seatsLimit);
     }
 }
