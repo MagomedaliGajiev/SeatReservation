@@ -28,6 +28,8 @@ public class ReservationServiceDbContext : DbContext
 
     public DbSet<User> Users => Set<User>();
 
+    public DbSet<Seat> Seats => Set<Seat>();
+
     private ILoggerFactory CreateLoggerFactory() =>
         LoggerFactory.Create(builder => { builder.AddConsole(); });
 }

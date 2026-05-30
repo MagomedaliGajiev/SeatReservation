@@ -19,6 +19,12 @@ public class NpgSqlVenuesRepository : IVenuesRepository
         _logger = logger;
     }
 
+    public Task<Result<Venue, Error>> GetById(VenueId id, CancellationToken cancellationToken) => throw new NotImplementedException();
+
+    public Task<Result<Venue, Error>> GetByIdWithSeats(VenueId id, CancellationToken cancellationToken) => throw new NotImplementedException();
+
+    public Task<IReadOnlyList<Venue>> GetByPrefix(string prefix, CancellationToken cancellationToken) => throw new NotImplementedException();
+
     public async Task<Result<Guid, Error>> Add(Venue venue, CancellationToken cancellationToken)
     {
         using var connection = await _connectionFactory.CreateConnectionAsync();
@@ -68,4 +74,85 @@ public class NpgSqlVenuesRepository : IVenuesRepository
             return Error.Failure("venue.insert", "Fail to insert venue");
         }
     }
+
+    public Task Save() => throw new NotImplementedException();
+
+    public async Task<Result<Guid, Error>> UpdateVenueName(VenueId venueId, VenueName venueName, CancellationToken cancellationToken)
+    {
+        using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
+
+        var transaction = connection.BeginTransaction();
+
+        try
+        {
+            const string updateNameSql = """
+                                            UPDATE venues
+                                            SET name = @Name
+                                            WHERE id =  @Id
+                                         """;
+
+            var updateNameParams = new
+            {
+                Id = venueId.Value,
+                Name = venueName.Name,
+            };
+
+            await connection.ExecuteAsync(updateNameSql, updateNameParams);
+
+            transaction.Commit();
+
+            return venueId.Value;
+        }
+        catch (Exception ex)
+        {
+            transaction.Rollback();
+
+            _logger.LogError(ex, "Fail to update venue");
+
+            return Error.Failure("venue.update", "Fail to update venue");
+        }
+    }
+
+    public async Task<UnitResult<Error>> UpdateVenueNameByPrefix(
+        string prefix,
+        VenueName venueName,
+        CancellationToken cancellationToken)
+    {
+        using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
+
+        var transaction = connection.BeginTransaction();
+
+        try
+        {
+            const string updateNameSql = """
+                                            UPDATE venues
+                                            SET name = @Name
+                                            WHERE prefix LIKE  @Prefix
+                                         """;
+
+            var updateNameParams = new
+            {
+                Prefix = $"{prefix}%",
+                Name = venueName.Name,
+            };
+
+            await connection.ExecuteAsync(updateNameSql, updateNameParams);
+
+            transaction.Commit();
+
+            return UnitResult.Success<Error>();
+        }
+        catch (Exception ex)
+        {
+            transaction.Rollback();
+
+            _logger.LogError(ex, "Fail to update venue");
+
+            return Error.Failure("venue.update", "Fail to update venue");
+        }
+    }
+
+    public Task<UnitResult<Error>> DeleteSeatsByVenueId(VenueId venueId, CancellationToken cancellationToken) => throw new NotImplementedException();
+
+    public Task<UnitResult<Error>> AddSeats(IEnumerable<Seat> seats, CancellationToken cancellationToken) => throw new NotImplementedException();
 }
