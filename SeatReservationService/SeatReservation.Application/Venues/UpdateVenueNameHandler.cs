@@ -9,10 +9,12 @@ namespace SeatReservation.Application.Venues;
 public class UpdateVenueNameHandler
 {
     private readonly IVenuesRepository _repository;
+    private readonly ITransactionManager _transactionManager;
 
-    public UpdateVenueNameHandler(IVenuesRepository repository)
+    public UpdateVenueNameHandler(IVenuesRepository repository, ITransactionManager transactionManager)
     {
         _repository = repository;
+        _transactionManager = transactionManager;
     }
 
     public async Task<Result<Guid, Error>> Handle(UpdateVenueNameRequest request, CancellationToken cancellationToken)
@@ -28,7 +30,7 @@ public class UpdateVenueNameHandler
 
         venue.UpdateName(request.Name);
 
-        await _repository.Save();
+        await _transactionManager.SaveChangesAsync(cancellationToken);
 
         return venueId.Value;
     }
