@@ -9,19 +9,30 @@ namespace SeatReservation.Application.Venues;
 public class UpdateVenueSeatsHandler
 {
     private readonly IVenuesRepository _repository;
+    private readonly ITransactionManager _transactionManager;
 
-    public UpdateVenueSeatsHandler(IVenuesRepository repository)
+    public UpdateVenueSeatsHandler(IVenuesRepository repository, ITransactionManager transactionManager)
     {
         _repository = repository;
+        _transactionManager = transactionManager;
     }
 
     public async Task<Result<Guid, Error>> Handle(UpdateVenueSeatsRequest request, CancellationToken cancellationToken)
     {
         var venueId = new VenueId(request.VenueId);
 
+        var transactionScopeResult = await _transactionManager.BeginTransactionAsync(cancellationToken);
+        if (transactionScopeResult.IsFailure)
+        {
+            return transactionScopeResult.Error;
+        }
+
+        using var transactionScope = transactionScopeResult.Value;
+
         var venue = await _repository.GetById(venueId, cancellationToken);
         if (venue.IsFailure)
         {
+            transactionScope.Rollback();
             return venue.Error;
         }
 
@@ -32,6 +43,7 @@ public class UpdateVenueSeatsHandler
             var seat = Seat.Create(venueId, seatRequest.RowNumber, seatRequest.SeatNumber);
             if (seat.IsFailure)
             {
+                transactionScope.Rollback();
                 return seat.Error;
             }
 
@@ -42,7 +54,13 @@ public class UpdateVenueSeatsHandler
 
         await _repository.DeleteSeatsByVenueId(venueId, cancellationToken);
 
-        await _repository.Save();
+        await _transactionManager.SaveChangesAsync(cancellationToken);
+
+        var commitedResult = transactionScope.Commit();
+        if (commitedResult.IsFailure)
+        {
+            return commitedResult.Error;
+        }
 
         return venueId.Value;
     }

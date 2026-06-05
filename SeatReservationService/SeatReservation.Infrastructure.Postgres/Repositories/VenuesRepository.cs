@@ -7,12 +7,12 @@ using SharedKernel;
 
 namespace SeatReservation.Infrastructure.Postgres.Repositories;
 
-public class EfCoreVenuesRepository : IVenuesRepository
+public class VenuesRepository : IVenuesRepository
 {
     private readonly ReservationServiceDbContext _dbContext;
-    private readonly ILogger<EfCoreVenuesRepository> _logger;
+    private readonly ILogger<VenuesRepository> _logger;
 
-    public EfCoreVenuesRepository(ReservationServiceDbContext dbContext, ILogger<EfCoreVenuesRepository> logger)
+    public VenuesRepository(ReservationServiceDbContext dbContext, ILogger<VenuesRepository> logger)
     {
         _dbContext = dbContext;
         _logger = logger;
@@ -75,13 +75,6 @@ public class EfCoreVenuesRepository : IVenuesRepository
 
             return Error.Failure("venue.insert", "Fail to insert venue");
         }
-    }
-
-    public async Task Save()
-    {
-        var entries = _dbContext.ChangeTracker.Entries();
-
-        await _dbContext.SaveChangesAsync();
     }
 
     public async Task<Result<Guid, Error>> UpdateVenueName(
