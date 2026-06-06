@@ -18,7 +18,7 @@ public class EventDetailsConfiguration : IEntityTypeConfiguration<EventDetails>
 
         builder
             .HasOne<Event>()
-            .WithOne(e => e.EventDetails)
+            .WithOne(e => e.Details)
             .HasForeignKey<EventDetails>(ed => ed.EventId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);

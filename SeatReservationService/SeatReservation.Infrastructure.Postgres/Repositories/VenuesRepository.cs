@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SeatReservation.Application.Database;
+using SeatReservation.Application.Venues;
 using SeatReservation.Domain.Venues;
 using SharedKernel;
 
