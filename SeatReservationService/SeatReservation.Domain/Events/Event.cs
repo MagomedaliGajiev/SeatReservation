@@ -107,7 +107,7 @@ public class Event
         string description,
         string performer)
     {
-        var detailsResult = Validate(name, startDate, endDate, eventDate, capacity, description);
+        var detailsResult = Validate(name, eventDate, startDate, endDate, capacity, description);
         if (detailsResult.IsFailure)
         {
             return detailsResult.Error;

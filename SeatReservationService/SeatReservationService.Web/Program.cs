@@ -1,7 +1,9 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SeatReservation.Application.Database;
+using SeatReservation.Application.Events;
 using SeatReservation.Application.Reservations;
+using SeatReservation.Application.Seats;
 using SeatReservation.Application.Venues;
 using SeatReservation.Infrastructure.Postgres;
 using SeatReservation.Infrastructure.Postgres.Database;
@@ -20,6 +22,9 @@ builder.Services.AddScoped<ITransactionManager, TransactionManager>();
 
 // builder.Services.AddScoped<IVenuesRepository, NpgSqlVenuesRepository>();
 builder.Services.AddScoped<IVenuesRepository, VenuesRepository>();
+builder.Services.AddScoped<IEventsRepository, EventsRepository>();
+builder.Services.AddScoped<IReservationsRepository, ReservationsRepository>();
+builder.Services.AddScoped<ISeatsRepository, SeatsRepository>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(ReserveRequestValidator).Assembly);
 
@@ -27,6 +32,8 @@ builder.Services.AddScoped<CreateVenueHandler>();
 builder.Services.AddScoped<UpdateVenueNameHandler>();
 builder.Services.AddScoped<UpdateVenueNameByPrefixHandler>();
 builder.Services.AddScoped<UpdateVenueSeatsHandler>();
+builder.Services.AddScoped<CreateEventHandler>();
+builder.Services.AddScoped<ReserveHandler>();
 
 var app = builder.Build();
 

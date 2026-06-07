@@ -17,6 +17,14 @@ public class EventDetailsConfiguration : IEntityTypeConfiguration<EventDetails>
             .HasColumnName("event_id");
 
         builder
+            .Property(d => d.Capacity)
+            .HasColumnName("capacity");
+
+        builder
+            .Property(d => d.Description)
+            .HasColumnName("description");
+
+        builder
             .HasOne<Event>()
             .WithOne(e => e.Details)
             .HasForeignKey<EventDetails>(ed => ed.EventId)

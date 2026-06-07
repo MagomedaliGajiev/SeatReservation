@@ -30,4 +30,22 @@ public class EventsRepository : IEventsRepository
 
         return @event;
     }
+
+    public async Task<Result<Guid, Error>> Add(Event @event, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await _dbContext.Events.AddAsync(@event, cancellationToken);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return @event.Id.Value;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Fail to insert event");
+
+            return Error.Failure("event.insert", "Fail to insert event");
+        }
+    }
 }

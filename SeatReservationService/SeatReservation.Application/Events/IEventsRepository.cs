@@ -7,4 +7,6 @@ namespace SeatReservation.Application.Events;
 public interface IEventsRepository
 {
     Task<Result<Event, Error>> GetById(EventId eventId, CancellationToken cancellationToken);
+
+    Task<Result<Guid, Error>> Add(Event @event, CancellationToken cancellationToken = default);
 }
