@@ -21,11 +21,25 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
             .HasConversion(e => e.Value, id => new EventId(id))
             .HasColumnName("event_id");
 
-        // builder
-        //     .HasMany(r => r.ReservedSeats)
-        //     .WithOne(rs => rs.Reservation)
-        //     .HasForeignKey(rs => rs.ReservationId)
-        //     .IsRequired()
-        //     .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(r => r.UserId)
+            .HasColumnName("user_id");
+
+        builder.Property(r => r.Status)
+            .HasConversion<string>()
+            .HasColumnName("status");
+
+        builder.Property(r => r.CreatedAt)
+            .HasColumnName("created_at");
+
+        builder
+            .HasMany(r => r.ReservedSeats)
+            .WithOne(rs => rs.Reservation)
+            .HasForeignKey(rs => rs.ReservationId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(r => r.ReservedSeats)
+            .HasField("_reservedSeats")
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

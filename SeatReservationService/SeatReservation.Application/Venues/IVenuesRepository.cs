@@ -2,7 +2,7 @@
 using SeatReservation.Domain.Venues;
 using SharedKernel;
 
-namespace SeatReservation.Application.Database;
+namespace SeatReservation.Application.Venues;
 
 public interface IVenuesRepository
 {
