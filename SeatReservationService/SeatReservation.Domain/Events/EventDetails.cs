@@ -18,4 +18,13 @@ public class EventDetails
     public int Capacity { get; private set; }
 
     public string Description { get; private set; }
+
+    public DateTime? LastReservationUtc { get; private set; }
+
+    public uint Version { get; private set; }
+
+    public void ReserveSeat()
+    {
+        LastReservationUtc = DateTime.UtcNow;
+    }
 }

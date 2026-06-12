@@ -46,6 +46,20 @@ public class ReservationsRepository : IReservationsRepository
         return await _dbContext.Reservations
             .Where(r => r.EventId == eventId)
             .Where(r => r.ReservedSeats.Any(rs => seatIds.Contains(rs.SeatId)))
+            .SelectMany(r => r.ReservedSeats)
             .AnyAsync(cancellationToken);
+    }
+
+    public async Task<int> GetReservedSeatsCount(EventId eventId, CancellationToken cancellationToken)
+    {
+        // await _dbContext.Database.ExecuteSqlAsync(
+        //     $"SELECT capacity FROM events_details WHERE event_id = {eventId} FOR UPDATE", cancellationToken));
+
+        return await _dbContext.Reservations
+            .Where(r => r.EventId == eventId)
+            .Where(r => r.Status == ReservationStatus.CONFIRMED
+                        || r.Status == ReservationStatus.PENDING)
+            .SelectMany(r => r.ReservedSeats)
+            .CountAsync(cancellationToken);
     }
 }
