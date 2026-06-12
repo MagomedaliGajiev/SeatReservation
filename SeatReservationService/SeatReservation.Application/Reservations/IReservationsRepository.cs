@@ -11,4 +11,6 @@ public interface IReservationsRepository
     Task<Result<Guid, Error>> Add(Reservation reservation, CancellationToken cancellationToken);
 
     Task<bool> AnySeatsAlreadyReserved(EventId eventId, IEnumerable<SeatId> seatIds, CancellationToken cancellationToken);
+
+    Task<int> GetReservedSeatsCount(EventId eventId, CancellationToken cancellationToken);
 }

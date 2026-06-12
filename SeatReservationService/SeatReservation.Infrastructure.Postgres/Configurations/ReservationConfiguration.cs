@@ -30,16 +30,5 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
 
         builder.Property(r => r.CreatedAt)
             .HasColumnName("created_at");
-
-        builder
-            .HasMany(r => r.ReservedSeats)
-            .WithOne(rs => rs.Reservation)
-            .HasForeignKey(rs => rs.ReservationId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Navigation(r => r.ReservedSeats)
-            .HasField("_reservedSeats")
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

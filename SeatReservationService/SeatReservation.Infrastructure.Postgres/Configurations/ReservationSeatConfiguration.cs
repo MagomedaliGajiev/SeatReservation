@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SeatReservation.Domain.Events;
 using SeatReservation.Domain.Reservations;
 using SeatReservation.Domain.Venues;
 
@@ -19,11 +20,17 @@ public class ReservationSeatConfiguration : IEntityTypeConfiguration<Reservation
 
         builder.Property(v => v.SeatId)
             .HasConversion(v => v.Value, id => new SeatId(id))
-            .HasColumnName("seat_id");
+            .HasColumnName("seat_id")
+            .IsRequired();
 
         builder.Property(v => v.ReservationId)
             .HasConversion(v => v.Value, id => new ReservationId(id))
             .HasColumnName("reservation_id");
+
+        builder.Property(v => v.EventId)
+            .HasConversion(v => v.Value, id => new EventId(id))
+            .HasColumnName("event_id")
+            .IsRequired();
 
         builder
             .HasOne(rs => rs.Reservation)
@@ -39,8 +46,9 @@ public class ReservationSeatConfiguration : IEntityTypeConfiguration<Reservation
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder
-            .Property(rs => rs.SeatId)
-            .HasColumnName("seat_id");
+        builder.HasIndex(rs => new
+        {
+            rs.EventId, rs.SeatId,
+        }).IsUnique();
     }
 }

@@ -25,10 +25,18 @@ public class EventDetailsConfiguration : IEntityTypeConfiguration<EventDetails>
             .HasColumnName("description");
 
         builder
+            .Property(d => d.LastReservationUtc)
+            .HasColumnName("last_reservation_utc");
+
+        builder
             .HasOne<Event>()
             .WithOne(e => e.Details)
             .HasForeignKey<EventDetails>(ed => ed.EventId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .Property(b => b.Version)
+            .IsRowVersion();
     }
 }

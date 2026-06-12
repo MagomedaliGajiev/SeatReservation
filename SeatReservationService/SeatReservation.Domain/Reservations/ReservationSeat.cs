@@ -1,4 +1,5 @@
-﻿using SeatReservation.Domain.Venues;
+﻿using SeatReservation.Domain.Events;
+using SeatReservation.Domain.Venues;
 
 namespace SeatReservation.Domain.Reservations;
 
@@ -11,11 +12,12 @@ public class ReservationSeat
     {
     }
 
-    public ReservationSeat(ReservationSeatId id, Reservation reservation, SeatId seatId)
+    public ReservationSeat(ReservationSeatId id, Reservation reservation, SeatId seatId, EventId eventId)
     {
         Id = id;
         Reservation = reservation;
         SeatId = seatId;
+        EventId = eventId;
         ReservedAt = DateTime.UtcNow;
     }
 
@@ -26,6 +28,8 @@ public class ReservationSeat
     public Reservation Reservation { get; private set; }
 
     public SeatId SeatId { get; private set; }
+
+    public EventId EventId { get; private set; }
 
     public DateTime ReservedAt { get; }
 }

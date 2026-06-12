@@ -21,7 +21,9 @@ public class EventsRepository : IEventsRepository
 
     public async Task<Result<Event, Error>> GetById(EventId eventId, CancellationToken cancellationToken)
     {
-        var @event = await _dbContext.Events.FirstOrDefaultAsync(e => e.Id == eventId, cancellationToken);
+        var @event = await _dbContext.Events
+            .Include(e => e.Details)
+            .FirstOrDefaultAsync(e => e.Id == eventId, cancellationToken);
 
         if (@event is null)
         {
