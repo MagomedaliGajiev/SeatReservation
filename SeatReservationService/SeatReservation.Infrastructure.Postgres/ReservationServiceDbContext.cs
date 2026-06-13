@@ -34,6 +34,8 @@ public class ReservationServiceDbContext : DbContext
 
     public DbSet<Reservation> Reservations => Set<Reservation>();
 
+    public DbSet<ReservationSeat> ReservationSeats => Set<ReservationSeat>();
+
     public DbSet<Event> Events => Set<Event>();
 
     private ILoggerFactory CreateLoggerFactory() =>

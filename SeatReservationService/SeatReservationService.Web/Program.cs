@@ -34,6 +34,7 @@ builder.Services.AddScoped<UpdateVenueNameByPrefixHandler>();
 builder.Services.AddScoped<UpdateVenueSeatsHandler>();
 builder.Services.AddScoped<CreateEventHandler>();
 builder.Services.AddScoped<ReserveHandler>();
+builder.Services.AddScoped<ReserveAdjacentSeatsHandler>();
 
 var app = builder.Build();
 

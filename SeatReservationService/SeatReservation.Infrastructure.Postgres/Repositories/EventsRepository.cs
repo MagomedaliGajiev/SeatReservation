@@ -19,15 +19,16 @@ public class EventsRepository : IEventsRepository
         _logger = logger;
     }
 
-    public async Task<Result<Event, Error>> GetById(EventId eventId, CancellationToken cancellationToken)
+    public async Task<Result<Event, Error>> GetByIdWithLock(EventId eventId, CancellationToken cancellationToken)
     {
         var @event = await _dbContext.Events
+            .FromSql($"SELECT * FROM events WHERE id = {eventId.Value} FOR UPDATE")
             .Include(e => e.Details)
-            .FirstOrDefaultAsync(e => e.Id == eventId, cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (@event is null)
         {
-            return Error.Failure("event.not.found", "Event not found");
+            return GeneralErrors.NotFound(eventId.Value);
         }
 
         return @event;
