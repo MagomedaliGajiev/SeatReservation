@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SeatReservation.Application.Venues;
 using SeatReservation.Contracts;
+using SeatReservation.Contracts.Venues;
 
 namespace SeatReservationService.Web.Controllers;
 

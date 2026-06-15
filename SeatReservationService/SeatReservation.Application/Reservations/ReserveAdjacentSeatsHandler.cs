@@ -4,6 +4,8 @@ using SeatReservation.Application.Events;
 using SeatReservation.Application.Seats;
 using SeatReservation.Application.Venues;
 using SeatReservation.Contracts;
+using SeatReservation.Contracts.Reservation;
+using SeatReservation.Contracts.Seats;
 using SeatReservation.Domain.Events;
 using SeatReservation.Domain.Reservations;
 using SeatReservation.Domain.Venues;

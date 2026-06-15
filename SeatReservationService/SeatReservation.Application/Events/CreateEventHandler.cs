@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using SeatReservation.Contracts;
+using SeatReservation.Contracts.Events;
 using SeatReservation.Domain.Events;
 using SeatReservation.Domain.Venues;
 using SharedKernel;
