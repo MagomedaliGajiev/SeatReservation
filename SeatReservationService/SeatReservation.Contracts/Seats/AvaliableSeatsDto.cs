@@ -1,6 +1,6 @@
 ﻿namespace SeatReservation.Contracts.Seats;
 
-public record SeatsDto
+public record AvaliableSeatsDto
 {
     public Guid Id { get; init; }
 
@@ -9,4 +9,6 @@ public record SeatsDto
     public int SeatNumber { get; init; }
 
     public Guid VenueId { get; init; }
+
+    public bool IsAvailable { get; init; }
 }

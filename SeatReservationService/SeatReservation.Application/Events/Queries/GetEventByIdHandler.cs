@@ -17,35 +17,38 @@ public class GetEventByIdHandler
 
     public async Task<GetEventDto?> Handle(GetEventByIdRequest query, CancellationToken cancellationToken)
     {
-        return await _readDbContext.EventsRead
-            .Include(e => e.Details)
-            .Where(e => e.Id == new EventId(query.EventId))
-            .Select(e => new GetEventDto
-            {
-                Id = e.Id.Value,
-                Capacity = e.Details.Capacity,
-                Description = e.Details.Description,
-                LastReservationUtc = e.Details.LastReservationUtc,
-                EndDate = e.EndDate,
-                EventDate = e.EventDate,
-                Name = e.Name,
-                StartDate = e.StartDate,
-                Type = e.Type.ToString(),
-                VenueId = e.VenueId.Value,
-                Status = e.Status.ToString(),
-                Info = e.Info.ToString(),
-                Seats = _readDbContext.SeatsRead
-                    .Where(s => s.VenueId == e.VenueId)
-                    .OrderBy(s => s.RowNumber)
-                    .ThenBy(s => s.SeatNumber)
-                    .Select(s => new SeatsDto
-                    {
-                        Id = s.Id.Value,
-                        RowNumber = s.RowNumber,
-                        SeatNumber = s.SeatNumber,
-                        VenueId = s.VenueId.Value,
-                    }).ToList(),
-            })
-            .FirstOrDefaultAsync(cancellationToken);
+        var seats = await _readDbContext.EventsRead
+        // return await _readDbContext.EventsRead
+        //     .Include(e => e.Details)
+        //     .Where(e => e.Id == new EventId(query.EventId))
+        //     .Select(e => new GetEventDto
+        //     {
+        //         Id = e.Id.Value,
+        //         Capacity = e.Details.Capacity,
+        //         Description = e.Details.Description,
+        //         LastReservationUtc = e.Details.LastReservationUtc,
+        //         EndDate = e.EndDate,
+        //         EventDate = e.EventDate,
+        //         Name = e.Name,
+        //         StartDate = e.StartDate,
+        //         Type = e.Type.ToString(),
+        //         VenueId = e.VenueId.Value,
+        //         Status = e.Status.ToString(),
+        //         Info = e.Info.ToString(),
+        //         Seats = _readDbContext.SeatsRead
+        //             .Where(s => s.VenueId == e.VenueId)
+        //             .OrderBy(s => s.RowNumber)
+        //             .ThenBy(s => s.SeatNumber)
+        //             .Select(s => new AvaliableSeatsDto
+        //             {
+        //                 Id = s.Id.Value,
+        //                 RowNumber = s.RowNumber,
+        //                 SeatNumber = s.SeatNumber,
+        //                 VenueId = s.VenueId.Value,
+        //                 IsAvailable = !_readDbContext.ReservationSeatsRead
+        //                     .Any(rs => rs.SeatId == s.Id && rs.EventId == e.Id),
+        //             }).ToList(),
+        //     })
+        //     .FirstOrDefaultAsync(cancellationToken);
     }
 }
