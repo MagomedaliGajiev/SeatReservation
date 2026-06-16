@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using SeatReservation.Application.Database;
 
 namespace SeatReservation.Infrastructure.Postgres.Database;
 

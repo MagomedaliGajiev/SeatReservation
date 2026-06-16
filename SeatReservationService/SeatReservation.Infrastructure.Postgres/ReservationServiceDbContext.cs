@@ -32,4 +32,12 @@ public class ReservationServiceDbContext : DbContext, IReadDbContext
     public DbSet<Event> Events => Set<Event>();
 
     public IQueryable<Event> EventsRead => Set<Event>().AsQueryable().AsNoTracking();
+
+    public IQueryable<Venue> VenuesRead => Set<Venue>().AsQueryable().AsNoTracking();
+
+    public IQueryable<Seat> SeatsRead => Set<Seat>().AsQueryable().AsNoTracking();
+
+    public IQueryable<Reservation> ReservationsRead => Set<Reservation>().AsQueryable().AsNoTracking();
+
+    public IQueryable<ReservationSeat> ReservationSeatsRead => Set<ReservationSeat>().AsQueryable().AsNoTracking();
 }

@@ -28,4 +28,14 @@ public class EventsController : ControllerBase
         var @event = await handler.Handle(new GetEventByIdRequest(eventId), cancellationToken);
         return @event is null ? NotFound() : Ok(@event);
     }
+
+    [HttpGet("{eventId:guid}/dapper")]
+    public async Task<ActionResult<GetEventDto>> GetByIdDapper(
+        [FromRoute]Guid eventId,
+        [FromServices] GetEventByIdHandlerDapper handler,
+        CancellationToken cancellationToken)
+    {
+        var @event = await handler.Handle(new GetEventByIdRequest(eventId), cancellationToken);
+        return @event is null ? NotFound() : Ok(@event);
+    }
 }
