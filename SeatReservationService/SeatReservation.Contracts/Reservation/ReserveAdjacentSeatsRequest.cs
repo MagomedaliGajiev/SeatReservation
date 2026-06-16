@@ -1,4 +1,4 @@
-﻿namespace SeatReservation.Contracts;
+﻿namespace SeatReservation.Contracts.Reservation;
 
 public record ReserveAdjacentSeatsRequest(
     Guid EventId,

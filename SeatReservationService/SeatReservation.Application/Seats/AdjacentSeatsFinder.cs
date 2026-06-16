@@ -1,6 +1,6 @@
 ﻿using SeatReservation.Domain.Venues;
 
-namespace SeatReservation.Application.Venues;
+namespace SeatReservation.Application.Seats;
 
 public static class AdjacentSeatsFinder
 {

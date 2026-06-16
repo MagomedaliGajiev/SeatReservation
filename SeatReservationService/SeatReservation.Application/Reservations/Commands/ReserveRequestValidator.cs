@@ -1,9 +1,9 @@
 using Core.Validation;
 using FluentValidation;
-using SeatReservation.Contracts;
+using SeatReservation.Contracts.Reservation;
 using SharedKernel;
 
-namespace SeatReservation.Application.Reservations;
+namespace SeatReservation.Application.Reservations.Commands;
 
 public class ReserveRequestValidator : AbstractValidator<ReserveRequest>
 {

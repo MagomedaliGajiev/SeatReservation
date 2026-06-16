@@ -1,4 +1,4 @@
-﻿namespace SeatReservation.Contracts;
+﻿namespace SeatReservation.Contracts.Events;
 
 public record CreateEventRequest(
     Guid VenueId,
