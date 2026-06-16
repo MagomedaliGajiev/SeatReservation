@@ -1,11 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
-using SeatReservation.Contracts;
 using SeatReservation.Contracts.Events;
 using SeatReservation.Domain.Events;
 using SeatReservation.Domain.Venues;
 using SharedKernel;
 
-namespace SeatReservation.Application.Events;
+namespace SeatReservation.Application.Events.Commands;
 
 public class CreateEventHandler
 {

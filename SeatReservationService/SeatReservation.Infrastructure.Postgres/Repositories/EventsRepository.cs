@@ -51,12 +51,4 @@ public class EventsRepository : IEventsRepository
             return Error.Failure("event.insert", "Fail to insert event");
         }
     }
-
-    public async Task<Event?> GetById(EventId eventId, CancellationToken cancellationToken)
-    {
-        return await _dbContext.Events
-            .Include(e => e.Details)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.Id == eventId, cancellationToken);
-    }
 }

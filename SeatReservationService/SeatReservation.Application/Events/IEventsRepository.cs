@@ -9,6 +9,4 @@ public interface IEventsRepository
     Task<Result<Event, Error>> GetByIdWithLock(EventId eventId, CancellationToken cancellationToken);
 
     Task<Result<Guid, Error>> Add(Event @event, CancellationToken cancellationToken = default);
-
-    Task<Event?> GetById(EventId eventId, CancellationToken cancellationToken);
 }

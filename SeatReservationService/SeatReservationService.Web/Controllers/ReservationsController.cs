@@ -1,9 +1,7 @@
 ﻿using Framework.Endpoints;
 using Microsoft.AspNetCore.Mvc;
-using SeatReservation.Application.Reservations;
-using SeatReservation.Contracts;
+using SeatReservation.Application.Reservations.Commands;
 using SeatReservation.Contracts.Reservation;
-using SeatReservation.Contracts.Seats;
 
 namespace SeatReservationService.Web.Controllers;
 
