@@ -16,13 +16,13 @@ public class GetEventByIdHandlerDapper
 
     public async Task<GetEventDto?> Handle(GetEventByIdRequest query, CancellationToken cancellationToken)
     {
-        var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
+        using var connection = await _connectionFactory.CreateConnectionAsync(cancellationToken);
 
         GetEventDto? eventDto = null;
 
-        var events = await connection.QueryAsync<GetEventDto, AvaliableSeatsDto, GetEventDto>(
+        await connection.QueryAsync<GetEventDto, AvailableSeatsDto, GetEventDto>(
             """
-                SELECT *,
+                SELECT
                     e.id,
                     e.venue_id,
                     e.name,
@@ -34,6 +34,7 @@ public class GetEventByIdHandlerDapper
                     e.info,
                     ed.capacity,
                     ed.description,
+                    ed.last_reservation_utc,
                     s.id,
                     s.venue_id,
                     s.row_number,
@@ -41,7 +42,7 @@ public class GetEventByIdHandlerDapper
                     rs is null as is_available
                 FROM events e
                 JOIN events_details ed ON ed.event_id = e.id
-                JOIN seats s ON e.venue_id = s.venue_id
+                LEFT JOIN seats s ON e.venue_id = s.venue_id
                 LEFT JOIN reservation_seats rs ON s.id = rs.seat_id and rs.event_id = e.id
                 WHERE e.id = @eventId
                 ORDER BY s.row_number, s.seat_number
@@ -55,7 +56,10 @@ public class GetEventByIdHandlerDapper
             {
                 eventDto ??= e;
 
-                eventDto.Seats.Add(s);
+                if (s is not null)
+                {
+                    eventDto.Seats.Add(s);
+                }
 
                 return eventDto;
             });
