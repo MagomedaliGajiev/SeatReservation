@@ -9,6 +9,7 @@ using SeatReservation.Application.Reservations.Commands;
 using SeatReservation.Application.Seats;
 using SeatReservation.Application.Venues;
 using SeatReservation.Application.Venues.Commands;
+using SeatReservation.Contracts.Events;
 using SeatReservation.Infrastructure.Postgres;
 using SeatReservation.Infrastructure.Postgres.Database;
 using SeatReservation.Infrastructure.Postgres.Repositories;
@@ -58,6 +59,8 @@ builder.Services.AddScoped<ReserveHandler>();
 builder.Services.AddScoped<ReserveAdjacentSeatsHandler>();
 builder.Services.AddScoped<GetEventByIdHandler>();
 builder.Services.AddScoped<GetEventByIdHandlerDapper>();
+builder.Services.AddScoped<GetEventsHandler>();
+builder.Services.AddScoped<GetEventDto>();
 
 builder.Services.AddScoped<ISeeder, ReservationSeeder>();
 

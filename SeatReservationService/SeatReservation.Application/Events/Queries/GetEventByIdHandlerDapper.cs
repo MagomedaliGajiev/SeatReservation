@@ -35,6 +35,9 @@ public class GetEventByIdHandlerDapper
                     ed.capacity,
                     ed.description,
                     ed.last_reservation_utc,
+                    COUNT(*) OVER () as total_seats,
+                    COUNT(rs.seat_id) OVER () as reserved_seats,
+                    COUNT(*) OVER () - COUNT(rs.seat_id) OVER () as available_seats,
                     s.id,
                     s.venue_id,
                     s.row_number,
@@ -42,7 +45,7 @@ public class GetEventByIdHandlerDapper
                     rs is null as is_available
                 FROM events e
                 JOIN events_details ed ON ed.event_id = e.id
-                LEFT JOIN seats s ON e.venue_id = s.venue_id
+                JOIN seats s ON e.venue_id = s.venue_id
                 LEFT JOIN reservation_seats rs ON s.id = rs.seat_id and rs.event_id = e.id
                 WHERE e.id = @eventId
                 ORDER BY s.row_number, s.seat_number

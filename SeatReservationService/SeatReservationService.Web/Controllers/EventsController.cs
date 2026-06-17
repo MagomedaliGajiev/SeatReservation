@@ -38,4 +38,14 @@ public class EventsController : ControllerBase
         var @event = await handler.Handle(new GetEventByIdRequest(eventId), cancellationToken);
         return @event is null ? NotFound() : Ok(@event);
     }
+
+    [HttpGet]
+    public async Task<ActionResult<GetEventsDto>> GetEvents(
+        [FromQuery] GetEventsRequest request,
+        [FromServices] GetEventsHandler handler,
+        CancellationToken cancellationToken)
+    {
+       var events = await handler.Handle(request, cancellationToken);
+       return Ok(events);
+    }
 }
