@@ -7,4 +7,9 @@ public record GetEventsRequest(
     DateTime? DateTo,
     string? Status,
     Guid? VenueId,
-    int? MinAvailableSeats);
+    int? MinAvailableSeats,
+    PaginationRequest Pagination);
+
+public record PaginationRequest(
+    int Page = 1,
+    int PageSize = 20);

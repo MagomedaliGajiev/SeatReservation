@@ -2,7 +2,7 @@
 
 namespace SeatReservation.Contracts.Events;
 
-public record GetEventsDto(List<EventDto> EventDtos);
+public record GetEventsDto(List<EventDto> EventDtos, long TotalCount);
 
 public record EventDto
 {

@@ -55,6 +55,15 @@ public class GetEventsHandler
                 >= query.MinAvailableSeats.Value);
         }
 
+        eventsQuery = eventsQuery
+            .OrderBy(e => e.EventDate);
+
+        long totalCount = await eventsQuery.LongCountAsync(cancellationToken);
+
+        eventsQuery = eventsQuery
+            .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+            .Take(query.Pagination.PageSize);
+
         var events = await eventsQuery
             .Select(e => new EventDto
             {
@@ -79,6 +88,6 @@ public class GetEventsHandler
             })
             .ToListAsync(cancellationToken);
 
-        return new GetEventsDto(events);
+        return new GetEventsDto(events, totalCount);
     }
 }
