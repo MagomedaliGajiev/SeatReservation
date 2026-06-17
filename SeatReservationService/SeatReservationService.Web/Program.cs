@@ -37,6 +37,8 @@ builder.Services.AddScoped<IReadDbContext>(sp =>
     sp.GetRequiredService<ReservationServiceDbContext>());
 
 builder.Services.AddSingleton<IDbConnectionFactory, NpgsqlConnectionFactory>();
+Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
 builder.Services.AddScoped<ITransactionManager, TransactionManager>();
 
 // builder.Services.AddScoped<IVenuesRepository, NpgSqlVenuesRepository>();
@@ -55,6 +57,7 @@ builder.Services.AddScoped<CreateEventHandler>();
 builder.Services.AddScoped<ReserveHandler>();
 builder.Services.AddScoped<ReserveAdjacentSeatsHandler>();
 builder.Services.AddScoped<GetEventByIdHandler>();
+builder.Services.AddScoped<GetEventByIdHandlerDapper>();
 
 builder.Services.AddScoped<ISeeder, ReservationSeeder>();
 
