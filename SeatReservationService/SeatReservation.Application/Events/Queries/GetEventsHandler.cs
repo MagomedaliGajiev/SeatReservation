@@ -56,7 +56,7 @@ public class GetEventsHandler
         }
 
         eventsQuery = eventsQuery
-            .OrderBy(e => e.EventDate);
+            .OrderByDescending(e => e.EventDate);
 
         long totalCount = await eventsQuery.LongCountAsync(cancellationToken);
 
@@ -80,7 +80,9 @@ public class GetEventsHandler
                 Status = e.Status.ToString(),
                 Info = e.Info.ToString(),
                 TotalSeats = _readDbContext.SeatsRead.Count(s => s.VenueId == e.VenueId),
-                ReservedSeats = _readDbContext.ReservationSeatsRead.Count(rs => rs.EventId == e.Id),
+                ReservedSeats = _readDbContext.ReservationSeatsRead.Count(rs => rs.EventId == e.Id &&
+                    (rs.Reservation.Status == ReservationStatus.CONFIRMED ||
+                     rs.Reservation.Status == ReservationStatus.PENDING)),
                 AvailableSeats = _readDbContext.SeatsRead.Count(s => s.VenueId == e.VenueId) -
                                  _readDbContext.ReservationSeatsRead.Count(rs => rs.EventId == e.Id &&
                                      (rs.Reservation.Status == ReservationStatus.CONFIRMED ||
