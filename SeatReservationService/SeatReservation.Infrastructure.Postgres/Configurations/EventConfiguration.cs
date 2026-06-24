@@ -64,7 +64,5 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
         builder.HasIndex(e => e.EventDate);
 
         builder.HasIndex(e => e.StartDate);
-
-        builder.HasIndex(e => e.Status).HasFilter("status IN ('Confirmed', 'Pending')");
     }
 }
