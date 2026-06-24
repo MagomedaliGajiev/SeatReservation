@@ -129,9 +129,8 @@ public class GetEventsHandlerDapper
             
                                         (SELECT COUNT(*)
                                          FROM reservation_seats rs
-                                                  JOIN reservations r ON rs.reservation_id = r.id
-                                         WHERE rs.event_id = e.id
-                                           AND r.status IN ('CONFIRMED', 'PENDING')) AS reserved_seats,
+                                                  JOIN reservations r ON rs.reservation_id = r.id AND event_id = e.id
+                                           WHERE r.status IN ('CONFIRMED', 'PENDING')) AS reserved_seats,
             
                                         COUNT(*) OVER ()                             AS total_count
                                  FROM events e

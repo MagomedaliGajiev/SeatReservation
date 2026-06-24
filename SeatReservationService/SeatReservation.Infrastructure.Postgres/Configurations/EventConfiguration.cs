@@ -60,5 +60,7 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
             .Property(e => e.Info)
             .HasConversion<string>(new EventInfoConverter())
             .HasColumnName("info");
+
+        builder.HasIndex(e => e.EventDate);
     }
 }
