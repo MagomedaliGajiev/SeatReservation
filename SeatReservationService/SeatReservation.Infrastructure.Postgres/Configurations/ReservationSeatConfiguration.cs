@@ -50,5 +50,7 @@ public class ReservationSeatConfiguration : IEntityTypeConfiguration<Reservation
         {
             rs.EventId, rs.SeatId,
         }).IsUnique();
+        
+        // CREATE INDEX reservation_seats_event_id_reservation_id ON reservation_seats (event_id, reservation_id);
     }
 }

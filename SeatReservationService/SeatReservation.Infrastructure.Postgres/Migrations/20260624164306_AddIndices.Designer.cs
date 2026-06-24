@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SeatReservation.Infrastructure.Postgres;
@@ -12,9 +13,11 @@ using SeatReservation.Infrastructure.Postgres;
 namespace SeatReservation.Infrastructure.Postgres.Migrations
 {
     [DbContext(typeof(ReservationServiceDbContext))]
-    partial class ReservationServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260624164306_AddIndices")]
+    partial class AddIndices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,13 +74,10 @@ namespace SeatReservation.Infrastructure.Postgres.Migrations
 
                     b.HasIndex("EventDate");
 
-                    b.HasIndex("Name")
-                        .HasDatabaseName("ix_events_name_trgm");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Name"), "gin");
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Name"), new[] { "gin_trgm_ops" });
-
                     b.HasIndex("StartDate");
+
+                    b.HasIndex("Status")
+                        .HasFilter("status IN ('Confirmed', 'Pending')");
 
                     b.HasIndex("VenueId");
 
@@ -140,9 +140,6 @@ namespace SeatReservation.Infrastructure.Postgres.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_reservations");
-
-                    b.HasIndex("EventId", "Status")
-                        .HasFilter("status IN ('Confirmed', 'Pending')");
 
                     b.ToTable("reservations", (string)null);
                 });
